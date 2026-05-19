@@ -90,18 +90,19 @@ export function MissionsTable({
           }
         />
       </div>
-      <div className="rounded-md border overflow-x-auto">
-        <Table className="min-w-[1400px]">
+      <div className="w-full min-w-0 overflow-x-auto rounded-md border">
+        <Table className="w-full">
           <TableHeader>
             <TableRow>
-              <TableHead className="w-28">카테고리</TableHead>
-              <TableHead className="w-36">짧은 제목</TableHead>
-              <TableHead className="min-w-[280px]">미션</TableHead>
-              <TableHead className="w-20">시간</TableHead>
-              <TableHead className="w-40">효과</TableHead>
-              <TableHead className="w-24">권장 월령</TableHead>
-              <TableHead className="w-48">목표</TableHead>
-              <TableHead className="w-40">태그</TableHead>
+              <TableHead className="w-24">카테고리</TableHead>
+              <TableHead className="w-32">짧은 제목</TableHead>
+              {/* 미션 description — width 명시 X. 남는 폭을 차지하며 multiline wrap */}
+              <TableHead>미션</TableHead>
+              <TableHead className="w-16">시간</TableHead>
+              <TableHead className="w-32">효과</TableHead>
+              <TableHead className="w-20">권장 월령</TableHead>
+              <TableHead className="w-32">목표</TableHead>
+              <TableHead className="w-32">태그</TableHead>
               <TableHead className="w-20 text-right" />
             </TableRow>
           </TableHeader>
