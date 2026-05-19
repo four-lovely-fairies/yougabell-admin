@@ -96,10 +96,10 @@ export function MissionsTable({
             <TableRow>
               <TableHead className="w-24">카테고리</TableHead>
               <TableHead className="w-32">짧은 제목</TableHead>
-              {/* 미션 description — width 명시 X. 남는 폭을 차지하며 multiline wrap */}
+              {/* 미션·효과는 내용이 길 수 있어 width 미지정 → 남는 폭을 자동 분배 + multiline wrap */}
               <TableHead>미션</TableHead>
               <TableHead className="w-16">시간</TableHead>
-              <TableHead className="w-32">효과</TableHead>
+              <TableHead>효과</TableHead>
               <TableHead className="w-20">권장 월령</TableHead>
               <TableHead className="w-32">목표</TableHead>
               <TableHead className="w-32">태그</TableHead>
@@ -146,6 +146,7 @@ export function MissionsTable({
                 <TableCell className="p-1">
                   <EditableTextCell
                     value={m.effect}
+                    multiline
                     onSave={(next) => patch(m.id, { effect: next ?? "" })}
                   />
                 </TableCell>
