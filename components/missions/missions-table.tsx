@@ -90,18 +90,19 @@ export function MissionsTable({
           }
         />
       </div>
-      <div className="rounded-md border overflow-x-auto">
-        <Table className="min-w-[1400px]">
+      <div className="w-full min-w-0 overflow-x-auto rounded-md border">
+        <Table className="w-full">
           <TableHeader>
             <TableRow>
-              <TableHead className="w-28">카테고리</TableHead>
-              <TableHead className="w-36">짧은 제목</TableHead>
-              <TableHead className="min-w-[280px]">미션</TableHead>
-              <TableHead className="w-20">시간</TableHead>
-              <TableHead className="w-40">효과</TableHead>
-              <TableHead className="w-24">권장 월령</TableHead>
-              <TableHead className="w-48">목표</TableHead>
-              <TableHead className="w-40">태그</TableHead>
+              <TableHead className="w-24">카테고리</TableHead>
+              <TableHead className="w-32">짧은 제목</TableHead>
+              {/* 미션·효과·목표는 내용이 길 수 있어 width 미지정 → 남는 폭을 자동 분배 + multiline wrap */}
+              <TableHead>미션</TableHead>
+              <TableHead className="w-16">시간</TableHead>
+              <TableHead>효과</TableHead>
+              <TableHead className="w-20">권장 월령</TableHead>
+              <TableHead>목표</TableHead>
+              <TableHead className="w-32">태그</TableHead>
               <TableHead className="w-20 text-right" />
             </TableRow>
           </TableHeader>
@@ -145,6 +146,7 @@ export function MissionsTable({
                 <TableCell className="p-1">
                   <EditableTextCell
                     value={m.effect}
+                    multiline
                     onSave={(next) => patch(m.id, { effect: next ?? "" })}
                   />
                 </TableCell>
@@ -163,6 +165,7 @@ export function MissionsTable({
                 <TableCell className="p-1">
                   <EditableTextCell
                     value={m.goal}
+                    multiline
                     onSave={(next) =>
                       patch(m.id, { goal: next ?? undefined })
                     }
