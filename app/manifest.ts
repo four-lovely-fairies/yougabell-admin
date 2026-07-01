@@ -1,9 +1,9 @@
 import type { MetadataRoute } from "next";
 
 const manifest = (): MetadataRoute.Manifest => ({
-  name: "육아밸 어드민",
-  short_name: "육아밸 어드민",
-  description: "육아밸 운영자 CMS",
+  name: "육아벨 어드민",
+  short_name: "육아벨 어드민",
+  description: "육아벨 운영자 CMS",
   start_url: "/",
   display: "standalone",
   background_color: "#EEE4FF",
