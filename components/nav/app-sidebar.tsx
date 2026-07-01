@@ -61,7 +61,7 @@ export function AppSidebar() {
             육
           </div>
           <div className="flex flex-col text-sm leading-tight">
-            <span className="font-semibold">육아밸 운영자</span>
+            <span className="font-semibold">육아벨 운영자</span>
             <span className="text-muted-foreground text-xs">yougabell-admin</span>
           </div>
         </div>

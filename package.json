@@ -35,7 +35,7 @@
     "tailwindcss": "^4",
     "typescript": "^5"
   },
-  "description": "육아밸 — admin CMS (Next.js)",
+  "description": "육아벨 — admin CMS (Next.js)",
   "license": "UNLICENSED",
   "engines": {
     "node": ">=24"

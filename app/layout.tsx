@@ -14,7 +14,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "육아밸 운영자 콘솔",
+  title: "육아벨 운영자 콘솔",
   description: "yougabell-admin — 콘텐츠·사용자·리포트 운영",
 };
 
