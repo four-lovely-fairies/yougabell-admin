@@ -17,6 +17,7 @@ import {
 } from "@/components/ui/table";
 import { UsersFilters } from "@/components/users/users-filters";
 import { UsersPagination } from "@/components/users/users-pagination";
+import { UserTestPushButton } from "@/components/users/user-test-push-button";
 import { listUsers, type UserListItem } from "@/lib/api";
 import { maskId, maskName } from "@/lib/mask";
 import { getAdminAccessToken } from "@/lib/supabase/server";
@@ -97,13 +98,14 @@ export default async function UsersPage({
                   <TableHead className="w-20">직장</TableHead>
                   <TableHead className="w-20 text-right">자녀</TableHead>
                   <TableHead className="w-32 text-right">온보딩 완료</TableHead>
+                  <TableHead className="w-24 text-right">테스트 푸시</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
                 {data.items.length === 0 && !error && (
                   <TableRow>
                     <TableCell
-                      colSpan={6}
+                      colSpan={7}
                       className="text-center text-muted-foreground py-12"
                     >
                       조건에 맞는 사용자가 없습니다.
@@ -133,6 +135,9 @@ export default async function UsersPage({
                     </TableCell>
                     <TableCell className="text-right text-muted-foreground">
                       {formatDate(u.onboardedAt)}
+                    </TableCell>
+                    <TableCell className="text-right">
+                      <UserTestPushButton userId={u.id} />
                     </TableCell>
                   </TableRow>
                 ))}

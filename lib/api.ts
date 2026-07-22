@@ -47,6 +47,18 @@ export type UsersListResponse = {
   limit: number;
 };
 
+export type TestPushResult = {
+  attempted: number;
+  sent: number;
+  failed: number;
+  tickets: {
+    token: string;
+    status: "ok" | "error";
+    error?: string;
+    message?: string;
+  }[];
+};
+
 export type ListUsersQuery = {
   onboarded?: "true" | "false" | "all";
   q?: string;
@@ -294,5 +306,12 @@ export const adminApi = {
       }),
     remove: (id: string) =>
       adminRequest<void>(`/admin/missions/${id}`, { method: "DELETE" }),
+  },
+  notifications: {
+    testPush: (userId: string) =>
+      adminRequest<TestPushResult>("/admin/notifications/test-push", {
+        method: "POST",
+        json: { userId },
+      }),
   },
 };
