@@ -1,12 +1,14 @@
 import { MissionsTable } from "@/components/missions/missions-table";
 import { adminApi } from "@/lib/api";
+import { getAdminAccessToken } from "@/lib/supabase/server";
 
 export const dynamic = "force-dynamic";
 
 export default async function MissionsPage() {
+  const token = (await getAdminAccessToken()) ?? undefined;
   const [list, categories] = await Promise.all([
-    adminApi.missions.list({ take: 50 }),
-    adminApi.categories.list(),
+    adminApi.missions.list({ take: 50 }, token),
+    adminApi.categories.list(token),
   ]);
   return (
     <div className="flex flex-col gap-6 p-6">

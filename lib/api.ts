@@ -1,8 +1,33 @@
-// api 호출 — server component에서 fetch.
-// TODO(auth): admin namespace는 일단 무가드(dev only). AdminGuard 도입 후 Bearer/x-admin-secret 첨부.
+// api 호출 — server component(SSR)와 client component(페이지네이션·수정) 양쪽에서 사용.
+// 인증: Supabase 세션 access_token을 Bearer로 첨부. API의 AdminRoleGuard가
+// role=admin 또는 ADMIN_ALLOWED_EMAILS로 인가한다. 미인증 요청은 proxy.ts가
+// 이미 /login으로 막으므로, 여기 도달하는 요청은 세션이 있다고 가정한다.
 
 const BASE_URL =
   process.env.NEXT_PUBLIC_API_BASE_URL ?? "http://localhost:3000";
+
+// 이 모듈은 client component 그래프에도 포함되므로 next/headers(서버 전용)를
+// 정적으로도 동적으로도 참조하지 않는다. 브라우저에서는 browser client로 세션
+// 토큰을 얻고, server component(SSR)에서는 호출부가 서버 토큰을 명시적으로 주입한다.
+async function getBrowserAccessToken(): Promise<string | null> {
+  if (typeof window === "undefined") return null;
+  const { createSupabaseBrowserClient } = await import("@/lib/supabase/client");
+  const {
+    data: { session },
+  } = await createSupabaseBrowserClient().auth.getSession();
+  return session?.access_token ?? null;
+}
+
+async function authHeaders(
+  token?: string,
+  extra?: Record<string, string>,
+): Promise<Record<string, string>> {
+  const bearer = token ?? (await getBrowserAccessToken());
+  return {
+    ...(bearer ? { Authorization: `Bearer ${bearer}` } : {}),
+    ...extra,
+  };
+}
 
 export type UserListItem = {
   id: string;
@@ -31,6 +56,7 @@ export type ListUsersQuery = {
 
 export async function listUsers(
   query: ListUsersQuery = {},
+  token?: string,
 ): Promise<UsersListResponse> {
   const search = new URLSearchParams();
   if (query.onboarded) search.set("onboarded", query.onboarded);
@@ -39,9 +65,7 @@ export async function listUsers(
   if (query.limit) search.set("limit", String(query.limit));
 
   const res = await fetch(`${BASE_URL}/admin/users?${search.toString()}`, {
-    headers: {
-      "x-user-id": process.env.ADMIN_DEV_USER_ID ?? "",
-    },
+    headers: await authHeaders(token),
     cache: "no-store",
   });
 
@@ -66,17 +90,17 @@ export class AdminApiError extends Error {
 
 async function adminRequest<T>(
   path: string,
-  init?: RequestInit & { json?: unknown },
+  init?: RequestInit & { json?: unknown; token?: string },
 ): Promise<T> {
-  const { json, headers, ...rest } = init ?? {};
+  const { json, headers, token, ...rest } = init ?? {};
   let res: Response;
   try {
     res = await fetch(`${BASE_URL}${path}`, {
       ...rest,
-      headers: {
+      headers: await authHeaders(token, {
         "Content-Type": "application/json",
         ...(headers as Record<string, string> | undefined),
-      },
+      }),
       body: json !== undefined ? JSON.stringify(json) : undefined,
       cache: "no-store",
     });
@@ -219,11 +243,14 @@ function buildSearch(record: Record<string, string | number | undefined>) {
 
 export const adminApi = {
   categories: {
-    list: () => adminRequest<MilestoneCategory[]>("/admin/categories"),
+    list: (token?: string) =>
+      adminRequest<MilestoneCategory[]>("/admin/categories", { token }),
   },
   milestones: {
-    list: (q: MilestoneListQuery = {}) =>
-      adminRequest<CursorPage<Milestone>>(`/admin/milestones${buildSearch(q)}`),
+    list: (q: MilestoneListQuery = {}, token?: string) =>
+      adminRequest<CursorPage<Milestone>>(`/admin/milestones${buildSearch(q)}`, {
+        token,
+      }),
     create: (body: CreateMilestoneBody) =>
       adminRequest<Milestone>("/admin/milestones", {
         method: "POST",
@@ -238,7 +265,8 @@ export const adminApi = {
       adminRequest<void>(`/admin/milestones/${id}`, { method: "DELETE" }),
   },
   growthStages: {
-    list: () => adminRequest<GrowthStage[]>("/admin/growth-stages"),
+    list: (token?: string) =>
+      adminRequest<GrowthStage[]>("/admin/growth-stages", { token }),
     create: (body: CreateGrowthStageBody) =>
       adminRequest<GrowthStage>("/admin/growth-stages", {
         method: "POST",
@@ -253,8 +281,10 @@ export const adminApi = {
       adminRequest<void>(`/admin/growth-stages/${id}`, { method: "DELETE" }),
   },
   missions: {
-    list: (q: MissionListQuery = {}) =>
-      adminRequest<CursorPage<Mission>>(`/admin/missions${buildSearch(q)}`),
+    list: (q: MissionListQuery = {}, token?: string) =>
+      adminRequest<CursorPage<Mission>>(`/admin/missions${buildSearch(q)}`, {
+        token,
+      }),
     create: (body: CreateMissionBody) =>
       adminRequest<Mission>("/admin/missions", { method: "POST", json: body }),
     update: (id: string, body: UpdateMissionBody) =>
