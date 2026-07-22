@@ -19,6 +19,7 @@ import { UsersFilters } from "@/components/users/users-filters";
 import { UsersPagination } from "@/components/users/users-pagination";
 import { listUsers, type UserListItem } from "@/lib/api";
 import { maskId, maskName } from "@/lib/mask";
+import { getAdminAccessToken } from "@/lib/supabase/server";
 
 type SearchParams = {
   q?: string;
@@ -57,7 +58,8 @@ export default async function UsersPage({
   let data;
   let error: string | null = null;
   try {
-    data = await listUsers({ onboarded: "true", q, page, limit });
+    const token = (await getAdminAccessToken()) ?? undefined;
+    data = await listUsers({ onboarded: "true", q, page, limit }, token);
   } catch (e) {
     error = e instanceof Error ? e.message : "알 수 없는 오류";
     data = { items: [], total: 0, page, limit };

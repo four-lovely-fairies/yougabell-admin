@@ -1,10 +1,12 @@
 import { GrowthStagesTable } from "@/components/growth-stages/growth-stages-table";
 import { adminApi } from "@/lib/api";
+import { getAdminAccessToken } from "@/lib/supabase/server";
 
 export const dynamic = "force-dynamic";
 
 export default async function GrowthStagesPage() {
-  const items = await adminApi.growthStages.list();
+  const token = (await getAdminAccessToken()) ?? undefined;
+  const items = await adminApi.growthStages.list(token);
   return (
     <div className="flex flex-col gap-6 p-6">
       <header>
