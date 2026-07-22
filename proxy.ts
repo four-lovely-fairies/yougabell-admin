@@ -27,8 +27,19 @@ function redirectPreservingCookies(
 }
 
 export async function proxy(request: NextRequest) {
-  const { response, email } = await updateSession(request);
   const { pathname } = request.nextUrl;
+
+  // 자산·내부 경로는 인증 게이트를 태우지 않는다. config.matcher로도 걸러지지만,
+  // matcher 파싱이 어긋나도 자산이 /login으로 튕기지 않도록 방어적으로 재확인.
+  if (
+    pathname.startsWith("/_next") ||
+    pathname === "/favicon.ico" ||
+    /\.[a-zA-Z0-9]+$/.test(pathname)
+  ) {
+    return NextResponse.next();
+  }
+
+  const { response, email } = await updateSession(request);
   const allowed = isAllowlistedAdminEmail(email);
 
   // 이미 인가된 사용자가 로그인 페이지에 오면 대시보드로 보낸다.
@@ -52,7 +63,9 @@ export async function proxy(request: NextRequest) {
   return response;
 }
 
-export const proxyConfig = {
+// Next.js 16은 proxy 파일에서도 export 이름 `config`의 `matcher`를 읽는다.
+// (`proxyConfig`가 아님 — 그 경우 matcher가 무시돼 모든 경로에 프록시가 돈다.)
+export const config = {
   matcher: [
     // 정적 자원·이미지·파비콘을 제외한 모든 경로를 게이트한다.
     "/((?!_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp|ico)$).*)",
