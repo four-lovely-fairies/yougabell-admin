@@ -4,6 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import {
   Baby,
+  ChartColumn,
   ClipboardList,
   Heart,
   LayoutDashboard,
@@ -30,6 +31,7 @@ import {
 
 const overviewItems = [
   { href: "/", label: "대시보드", icon: LayoutDashboard },
+  { href: "/stats", label: "통계", icon: ChartColumn },
 ];
 
 const userItems = [{ href: "/users", label: "사용자", icon: Users }];
