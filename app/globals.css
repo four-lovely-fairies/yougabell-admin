@@ -117,6 +117,51 @@
   --sidebar-ring: oklch(0.556 0 0);
 }
 
+/* ============================================================
+   데이터 시각화 팔레트 (.viz 스코프)
+
+   기본 shadcn `--chart-*` 는 전부 무채색이라 카테고리 구분에 못 쓴다.
+   통계 화면은 아래 검증된 팔레트를 쓴다 — 색맹 시뮬레이션(ΔE)·표면 대비를
+   light(#ffffff = card) / dark(#171717 = card) 각각에서 통과시킨 값이다.
+
+   - series-1..5: 카테고리(정체성). 슬롯 순서 고정, 재사용·순환 금지.
+   - mood-1..5:  1~5 순서 척도(ordinal). 단일 색상 명도 램프.
+   - light 모드의 series-3/4/5 는 표면 대비 3:1 미만 → 범례·직접 라벨·수치 표를
+     항상 함께 노출한다(색만으로 의미를 전달하지 않음).
+   ============================================================ */
+.viz {
+  --viz-series-1: #2a78d6;
+  --viz-series-2: #eb6834;
+  --viz-series-3: #1baf7a;
+  --viz-series-4: #eda100;
+  --viz-series-5: #e87ba4;
+  --viz-mood-1: #86b6ef;
+  --viz-mood-2: #5598e7;
+  --viz-mood-3: #2a78d6;
+  --viz-mood-4: #1c5cab;
+  --viz-mood-5: #104281;
+  --viz-grid: #e1e0d9;
+  --viz-axis: #c3c2b7;
+  --viz-track: #f1f0ec;
+}
+
+.dark .viz {
+  --viz-series-1: #3987e5;
+  --viz-series-2: #d95926;
+  --viz-series-3: #199e70;
+  --viz-series-4: #c98500;
+  --viz-series-5: #d55181;
+  /* dark 표면에서는 "빛이 많을수록 값이 크다" — light 모드와 반대 방향으로 뻗는다 */
+  --viz-mood-1: #184f95;
+  --viz-mood-2: #256abf;
+  --viz-mood-3: #3987e5;
+  --viz-mood-4: #6da7ec;
+  --viz-mood-5: #9ec5f4;
+  --viz-grid: #2c2c2a;
+  --viz-axis: #383835;
+  --viz-track: #242423;
+}
+
 @layer base {
   * {
     @apply border-border outline-ring/50;
