@@ -16,7 +16,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { UsersFilters } from "@/components/users/users-filters";
-import { UsersPagination } from "@/components/users/users-pagination";
+import { TablePagination } from "@/components/ui/table-pagination";
 import { UserTestPushButton } from "@/components/users/user-test-push-button";
 import { listUsers, type UserListItem } from "@/lib/api";
 import { maskId, maskName } from "@/lib/mask";
@@ -37,7 +37,10 @@ function formatDate(iso: string | null): string {
   return new Date(iso).toLocaleDateString("ko-KR");
 }
 
-const WORK_STATUS_LABEL: Record<NonNullable<UserListItem["workStatus"]>, string> = {
+const WORK_STATUS_LABEL: Record<
+  NonNullable<UserListItem["workStatus"]>,
+  string
+> = {
   working: "재직",
   full_time_caregiver: "전업",
 };
@@ -78,7 +81,8 @@ export default async function UsersPage({
             <div>
               <CardTitle>온보딩 완료 사용자</CardTitle>
               <CardDescription>
-                온보딩(`onboardedAt`)을 마친 가입자 목록. 개인정보는 마스킹 표시.
+                온보딩(`onboardedAt`)을 마친 가입자 목록. 개인정보는 마스킹
+                표시.
               </CardDescription>
             </div>
             <UsersFilters />
@@ -143,11 +147,13 @@ export default async function UsersPage({
                 ))}
               </TableBody>
             </Table>
-            <UsersPagination
+            <TablePagination
               page={data.page}
               limit={data.limit}
               total={data.total}
               baseQuery={baseQuery}
+              basePath="/users"
+              unit="명"
             />
           </CardContent>
         </Card>
