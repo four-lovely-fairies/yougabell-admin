@@ -6,7 +6,8 @@
     "dev": "next dev -p 3002",
     "build": "next build",
     "start": "next start -p 3002",
-    "lint": "eslint"
+    "lint": "eslint",
+    "format": "prettier --write ."
   },
   "dependencies": {
     "@hookform/resolvers": "^5.2.2",
@@ -34,10 +35,11 @@
     "@types/react-dom": "^19",
     "eslint": "^9",
     "eslint-config-next": "16.2.4",
+    "prettier": "^3.9.6",
     "tailwindcss": "^4",
     "typescript": "^5"
   },
-  "description": "육아벨 — admin CMS (Next.js)",
+  "description": "\uc721\uc544\ubca8 \u2014 admin CMS (Next.js)",
   "license": "UNLICENSED",
   "engines": {
     "node": ">=24"
