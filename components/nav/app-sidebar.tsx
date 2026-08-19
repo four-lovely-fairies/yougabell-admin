@@ -10,6 +10,7 @@ import {
   LayoutDashboard,
   Lightbulb,
   MessageSquare,
+  MessagesSquare,
   Milestone,
   Sparkles,
   Users,
@@ -34,7 +35,10 @@ const overviewItems = [
   { href: "/stats", label: "통계", icon: ChartColumn },
 ];
 
-const userItems = [{ href: "/users", label: "사용자", icon: Users }];
+const userItems = [
+  { href: "/users", label: "사용자", icon: Users },
+  { href: "/inquiries", label: "문의", icon: MessagesSquare },
+];
 
 const contentItems = [
   { href: "/content/missions", label: "미션", icon: ClipboardList },
@@ -64,7 +68,9 @@ export function AppSidebar() {
           </div>
           <div className="flex flex-col text-sm leading-tight">
             <span className="font-semibold">육아벨 운영자</span>
-            <span className="text-muted-foreground text-xs">yougabell-admin</span>
+            <span className="text-muted-foreground text-xs">
+              yougabell-admin
+            </span>
           </div>
         </div>
       </SidebarHeader>
