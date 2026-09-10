@@ -9,6 +9,8 @@ export type UserListItem = {
   onboardedAt: string | null;
   childrenCount: number;
   createdAt: string;
+  /** 서버에서 마스킹한 이메일. 원문 이메일은 어드민에 전달하지 않는다. */
+  maskedEmail: string | null;
 };
 
 export type UsersListResponse = {

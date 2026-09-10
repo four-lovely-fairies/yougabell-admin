@@ -51,7 +51,7 @@ export default async function LoginPage({
           <div className="space-y-2">
             <h1 className="text-2xl font-semibold tracking-tight">로그인</h1>
             <p className="text-muted-foreground text-sm">
-              이메일로 로그인 링크를 받아 접속하세요. 비밀번호는 필요하지 않습니다.
+              Google 계정 또는 이메일 로그인 링크로 접속하세요.
             </p>
           </div>
 

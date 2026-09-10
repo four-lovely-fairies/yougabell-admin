@@ -33,7 +33,7 @@ export function UsersFilters() {
       className="flex items-center gap-2"
     >
       <Input
-        placeholder="이름 검색"
+        placeholder="이름 또는 이메일 검색"
         value={q}
         onChange={(e) => setQ(e.target.value)}
         className="max-w-xs"

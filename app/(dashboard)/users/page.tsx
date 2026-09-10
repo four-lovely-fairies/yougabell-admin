@@ -81,8 +81,8 @@ export default async function UsersPage({
             <div>
               <CardTitle>온보딩 완료 사용자</CardTitle>
               <CardDescription>
-                온보딩(`onboardedAt`)을 마친 가입자 목록. 개인정보는 마스킹
-                표시.
+                온보딩(`onboardedAt`)을 마친 가입자 목록. 이름 또는 이메일로
+                검색할 수 있으며, 개인정보는 마스킹 표시됩니다.
               </CardDescription>
             </div>
             <UsersFilters />
@@ -97,7 +97,7 @@ export default async function UsersPage({
               <TableHeader>
                 <TableRow>
                   <TableHead className="w-32">ID</TableHead>
-                  <TableHead>이름</TableHead>
+                  <TableHead>이름 / 이메일</TableHead>
                   <TableHead className="w-16">성별</TableHead>
                   <TableHead className="w-20">직장</TableHead>
                   <TableHead className="w-20 text-right">자녀</TableHead>
@@ -121,8 +121,13 @@ export default async function UsersPage({
                     <TableCell className="font-mono text-xs text-muted-foreground">
                       {maskId(u.id)}
                     </TableCell>
-                    <TableCell className="font-medium">
-                      {maskName(u.name)}
+                    <TableCell>
+                      <div className="font-medium">{maskName(u.name)}</div>
+                      {u.maskedEmail && (
+                        <div className="text-xs text-muted-foreground">
+                          {u.maskedEmail}
+                        </div>
+                      )}
                     </TableCell>
                     <TableCell>{GENDER_LABEL[u.gender]}</TableCell>
                     <TableCell>
